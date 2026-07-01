@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#314f39">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="巴林私厨">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <title>翩翩的巴林私厨</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #243127;
+      --muted: #657166;
+      --line: #dfe6dc;
+      --paper: #faf8f0;
+      --panel: #ffffff;
+      --sage: #55705a;
+      --sage-dark: #314f39;
+      --tomato: #b25743;
+      --gold: #b9883b;
+      --blue: #4d7184;
+      --soft: #f2f6ef;
+      --shadow: 0 14px 34px rgba(38, 48, 41, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      padding-bottom: calc(76px + env(safe-area-inset-bottom));
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 22px 18px 18px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(49, 79, 57, .96), rgba(77, 113, 132, .92)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='180' viewBox='0 0 360 180'%3E%3Cpath d='M0 136 C72 88 105 167 184 119 C256 76 278 102 360 54 L360 180 L0 180 Z' fill='%23ffffff' fill-opacity='.13'/%3E%3Ccircle cx='54' cy='42' r='26' fill='%23ffffff' fill-opacity='.12'/%3E%3Ccircle cx='292' cy='39' r='36' fill='%23ffffff' fill-opacity='.09'/%3E%3C/svg%3E");
+    }
+
+    .wrap {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(25px, 7vw, 34px);
+      letter-spacing: 0;
+    }
+
+    .version {
+      flex: 0 0 auto;
+      padding: 6px 10px;
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      font-size: 13px;
+    }
+
+    .subtitle {
+      margin: 9px 0 0;
+      color: rgba(255,255,255,.9);
+      font-size: 15px;
+    }
+
+    main {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: 16px 14px 28px;
+    }
+
+    section { margin: 18px 0 0; }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    p { margin: 6px 0; }
+
+    button {
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #fff;
+      background: var(--sage-dark);
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .notice {
+      padding: 12px 13px;
+      border: 1px solid rgba(178, 87, 67, .3);
+      border-left: 4px solid var(--tomato);
+      border-radius: 8px;
+      background: #fff8f5;
+      color: #53332d;
+      font-size: 14px;
+    }
+
+    .hero-grid,
+    .library-grid,
+    .week-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 760px) {
+      .hero-grid { grid-template-columns: 1fr 1fr; }
+      .library-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    .meal-card .head,
+    .day-card .head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px;
+      background: var(--soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meal-card .body,
+    .day-card .body,
+    .panel-body {
+      padding: 13px;
+    }
+
+    .kicker {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--sage-dark);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--sage);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tag.blue { background: var(--blue); }
+    .tag.gold { background: var(--gold); }
+    .tag.red { background: var(--tomato); }
+    .tag.light {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .ingredients {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      border-top: 1px solid var(--line);
+    }
+
+    .ingredients li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf1ec;
+      font-size: 14px;
+    }
+
+    .ingredients span:last-child {
+      flex: 0 0 auto;
+      color: var(--muted);
+    }
+
+    details {
+      margin-top: 10px;
+      border-top: 1px solid var(--line);
+      padding-top: 9px;
+    }
+
+    summary {
+      color: var(--sage-dark);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .day-card .meal-line {
+      padding: 10px 0;
+      border-bottom: 1px solid #edf1ec;
+    }
+
+    .day-card .meal-line:last-child { border-bottom: 0; }
+
+    .library-card {
+      padding: 13px;
+    }
+
+    .library-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--sage-dark);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 9px;
+    }
+
+    .chip {
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+    }
+
+    .checklist label {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      min-height: 36px;
+      padding: 8px 0;
+      border-bottom: 1px solid #edf1ec;
+    }
+
+    .checklist label:last-child { border-bottom: 0; }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      accent-color: var(--sage-dark);
+    }
+
+    .bottom-nav {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, .94);
+      backdrop-filter: blur(14px);
+    }
+
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border-radius: 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .bottom-nav a.active {
+      color: #fff;
+      background: var(--sage-dark);
+    }
+
+    .bottom-nav span:first-child {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    footer {
+      padding: 10px 14px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topline">
+        <h1>翩翩的巴林私厨</h1>
+        <div class="version">V5.0</div>
+      </div>
+      <p class="subtitle">手机查看 · 材料要求 · 经典菜品库 · 一键替换 · 炖盅预约</p>
+    </div>
+  </header>
+
+  <main>
+    <section id="today">
+      <h2>今天吃什么</h2>
+      <div class="notice" id="dataNotice"></div>
+      <div class="hero-grid" id="todayCards"></div>
+    </section>
+
+    <section id="requirements">
+      <h2>材料要求</h2>
+      <div class="library-grid">
+        <div class="card library-card">
+          <strong>已提供材料库</strong>
+          <p class="meta">只把你已给出的干货、根茎、豆类、水果和粮食标为“已有”。页面不会把未提供的食材当成库存事实。</p>
+        </div>
+        <div class="card library-card">
+          <strong>巴林常见补买</strong>
+          <p class="meta">默认补买方向是红薯、鸡肉、鸡蛋、牛肉、鱼、虾、豆腐、无糖酸奶和绿叶菜；这些是采购建议，不是当前库存。</p>
+        </div>
+        <div class="card library-card">
+          <strong>经典原型处理</strong>
+          <p class="meta">广式经典汤常用猪骨、瘦肉或老鸡。巴林默认版优先用鸡肉/牛肉替代，并在菜品里标清原型和替代。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="prep">
+      <h2>今晚预约</h2>
+      <div class="card">
+        <div class="panel-body checklist" id="prepChecklist"></div>
+      </div>
+    </section>
+
+    <section id="week">
+      <h2>本周菜单</h2>
+      <div class="week-grid" id="weekGrid"></div>
+    </section>
+
+    <section id="dishes">
+      <h2>菜品库</h2>
+      <div class="library-grid" id="dishLibrary"></div>
+    </section>
+
+    <section id="materials">
+      <h2>材料库</h2>
+      <div class="library-grid" id="materialLibrary"></div>
+    </section>
+
+    <section id="rules">
+      <h2>使用原则</h2>
+      <div class="library-grid">
+        <div class="card library-card">
+          <strong>怎么在手机上用</strong>
+          <p class="meta">早上打开“今天”，看豆浆机/蒸煮早餐；晚上打开“预约”，按清单把明天晚餐放进炖盅；不喜欢就点“换一个”。</p>
+        </div>
+        <div class="card library-card">
+          <strong>替换逻辑</strong>
+          <p class="meta">早餐只换简单早餐库，晚餐只换经典炖汤/糖水/花草茶库；替换会保存在当前手机浏览器里。</p>
+        </div>
+        <div class="card library-card">
+          <strong>不随意编菜</strong>
+          <p class="meta">新增菜品必须有经典原型；如果只是为了适应巴林采购而替换肉类，会单独标注为“巴林替代”。</p>
+        </div>
+        <div class="card library-card">
+          <strong>资料依据</strong>
+          <p class="meta">经典性参考广式老火汤、干贝/白萝卜汤类、五指毛桃广东药食材料、以及常见中式家常汤结构；本页不把食谱写成医疗功效。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="底部导航">
+    <a href="#today" class="active"><span>今</span><span>今天</span></a>
+    <a href="#requirements"><span>求</span><span>要求</span></a>
+    <a href="#prep"><span>炖</span><span>预约</span></a>
+    <a href="#week"><span>周</span><span>本周</span></a>
+    <a href="#dishes"><span>菜</span><span>菜品</span></a>
+    <a href="#materials"><span>料</span><span>材料</span></a>
+  </nav>
+
+  <footer>
+    营养原则参考：WHO 健康饮食建议、CDC 健康减重建议、Harvard Healthy Eating Plate。本页不是医疗诊断。
+  </footer>
+
+  <script>
+    const materials = {
+      corn: { name: "玉米", category: "新鲜蔬菜", source: "已提供食材库" },
+      carrot: { name: "胡萝卜", category: "新鲜蔬菜", source: "已提供食材库" },
+      radish: { name: "白萝卜", category: "新鲜蔬菜", source: "已提供食材库" },
+      pumpkin: { name: "南瓜", category: "新鲜蔬菜", source: "已提供食材库" },
+      ginger: { name: "姜", category: "新鲜蔬菜", source: "已提供食材库" },
+      onion: { name: "洋葱", category: "新鲜蔬菜", source: "已提供食材库" },
+      tomato: { name: "番茄", category: "新鲜蔬菜", source: "已提供食材库" },
+      apple: { name: "苹果", category: "新鲜水果", source: "已提供食材库" },
+      pear: { name: "雪梨", category: "新鲜水果", source: "已提供食材库" },
+      coconut: { name: "椰子", category: "新鲜水果", source: "有就买" },
+      shiitake: { name: "干香菇", category: "菌菇类", source: "已提供食材库" },
+      morel: { name: "羊肚菌", category: "菌菇类", source: "已提供食材库" },
+      termiteMushroom: { name: "黑鸡枞菌", category: "菌菇类", source: "已提供食材库" },
+      bambooFungus: { name: "竹荪", category: "菌菇类", source: "已提供食材库" },
+      woodEar: { name: "干木耳", category: "菌菇类", source: "已提供食材库" },
+      enoki: { name: "干金针菇", category: "菌菇类", source: "已提供食材库" },
+      scallop: { name: "元贝", category: "海味提鲜", source: "已提供食材库" },
+      driedShrimp: { name: "干虾米", category: "海味提鲜", source: "已提供食材库" },
+      hairyFig: { name: "五指毛桃", category: "补气类", source: "已提供食材库" },
+      codonopsis: { name: "党参", category: "补气类", source: "已提供食材库" },
+      astragalus: { name: "黄芪", category: "补气类", source: "已提供食材库" },
+      seaCoconut: { name: "海底椰", category: "养阴润燥", source: "已提供食材库" },
+      solomonseal: { name: "玉竹", category: "养阴润燥", source: "已提供食材库" },
+      ophiopogon: { name: "麦冬", category: "养阴润燥", source: "已提供食材库" },
+      dendrobium: { name: "铁皮石斛", category: "养阴润燥", source: "已提供食材库" },
+      lotusSeed: { name: "莲子", category: "健脾类", source: "已提供食材库" },
+      peanut: { name: "花生", category: "健脾类", source: "已提供食材库" },
+      soy: { name: "黄豆", category: "豆类", source: "已提供食材库" },
+      redBean: { name: "红豆", category: "豆类", source: "已提供食材库" },
+      fig: { name: "干无花果", category: "润肺清甜", source: "已提供食材库" },
+      honeyDate: { name: "干蜜枣", category: "润肺清甜", source: "已提供食材库" },
+      chenpi: { name: "陈皮", category: "润肺清甜", source: "已提供食材库" },
+      apricotKernel: { name: "杏仁", category: "润肺清甜", source: "已提供食材库" },
+      redDate: { name: "红枣", category: "滋补类", source: "已提供食材库" },
+      goji: { name: "枸杞", category: "滋补类", source: "已提供食材库" },
+      longan: { name: "干龙眼", category: "滋补类", source: "已提供食材库" },
+      lychee: { name: "干荔枝", category: "滋补类", source: "已提供食材库" },
+      walnut: { name: "干核桃", category: "滋补类", source: "已提供食材库" },
+      tremella: { name: "银耳", category: "甜品类", source: "已提供食材库" },
+      chrysanthemum: { name: "菊花", category: "花草茶类", source: "已提供食材库" },
+      mint: { name: "薄荷叶", category: "花草茶类", source: "已提供食材库" },
+      angelica: { name: "当归", category: "药香类", source: "已提供食材库" },
+      rice: { name: "普通大米", category: "粮食类", source: "已提供食材库" },
+      glutinousRice: { name: "糯米", category: "粮食类", source: "已提供食材库" },
+      sweetPotato: { name: "红薯", category: "巴林常见主食", source: "用户新增早餐可用；巴林常见补买" },
+      chicken: { name: "鸡肉/带骨鸡腿", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      beef: { name: "牛腱/牛肋", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      fish: { name: "白肉鱼", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      shrimp: { name: "鲜虾", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      leafyGreens: { name: "绿叶菜", category: "巴林常见蔬菜", source: "巴林常见补买" },
+      egg: { name: "鸡蛋", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      coffee: { name: "无糖咖啡", category: "饮品", source: "用户允许早餐喝咖啡" },
+      yogurt: { name: "无糖酸奶", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      tofu: { name: "豆腐", category: "巴林常见蛋白质", source: "巴林常见补买" },
+      leanPork: { name: "瘦肉/猪骨", category: "经典原型材料", source: "经典广式原型；不作为巴林默认采购" }
+    };
+
+    const dishes = {
+      soyEggSweetPotato: {
+        name: "无糖黄豆豆浆 + 水煮蛋 + 蒸红薯",
+        meal: "breakfast",
+        style: "简单早餐",
+        tags: ["豆浆", "蒸煮"],
+        classicBase: "中式家常早餐常见搭配：豆浆 + 鸡蛋 + 蒸薯类主食。",
+        bahrainAdaptation: "红薯为你新增可用早餐材料，按巴林常见补买处理。",
+        note: "早餐不做复杂烹饪；红薯控制小份，豆浆不加糖。",
+        ingredients: [["soy", "25 g"], ["egg", "1 个"], ["sweetPotato", "100 g"]]
+      },
+      redDateSoyEgg: {
+        name: "红枣黄豆豆浆 + 水煮蛋",
+        meal: "breakfast",
+        style: "豆浆机早餐",
+        tags: ["红枣豆浆", "简单"],
+        classicBase: "红枣豆浆是常见豆浆变化，早餐搭配鸡蛋补蛋白质。",
+        bahrainAdaptation: "红枣、黄豆来自已提供材料库，鸡蛋为巴林常见补买。",
+        note: "红枣只放 1 枚取味，不额外加糖。",
+        ingredients: [["soy", "25 g"], ["redDate", "1 枚"], ["egg", "1 个"]]
+      },
+      walnutSoyPumpkin: {
+        name: "核桃黄豆豆浆 + 蒸南瓜",
+        meal: "breakfast",
+        style: "豆浆机早餐",
+        tags: ["核桃豆浆", "蒸南瓜"],
+        classicBase: "核桃豆浆是常见豆浆变化；蒸南瓜是中式家常蒸煮主食。",
+        bahrainAdaptation: "干核桃、黄豆、南瓜来自已提供材料库。",
+        note: "核桃少量即可，避免早餐脂肪过高。",
+        ingredients: [["soy", "22 g"], ["walnut", "5 g"], ["pumpkin", "120 g"]]
+      },
+      redBeanRiceEgg: {
+        name: "红豆大米粥 + 鸡蛋",
+        meal: "breakfast",
+        style: "简单粥早餐",
+        tags: ["粥", "低油"],
+        classicBase: "红豆粥/杂豆粥是中式家常早餐和糖水基础做法。",
+        bahrainAdaptation: "红豆、大米来自已提供材料库，鸡蛋为巴林常见补买。",
+        note: "减脂版不加糖，粥量用小碗。",
+        ingredients: [["redBean", "20 g"], ["rice", "15 g"], ["egg", "1 个"]]
+      },
+      steamedPumpkinCoffee: {
+        name: "蒸南瓜 + 无糖咖啡 + 鸡蛋",
+        meal: "breakfast",
+        style: "咖啡早餐",
+        tags: ["蒸南瓜", "咖啡"],
+        classicBase: "蒸南瓜是家常蒸煮主食；咖啡是你允许的早餐饮品。",
+        bahrainAdaptation: "南瓜来自已提供材料库，鸡蛋为巴林常见补买。",
+        note: "咖啡不加糖；这道比南瓜粥更省事。",
+        ingredients: [["pumpkin", "150 g"], ["coffee", "1 杯"], ["egg", "1 个"]]
+      },
+      steamedEggSoy: {
+        name: "鸡蛋羹 + 黄豆豆浆",
+        meal: "breakfast",
+        style: "简单蒸蛋",
+        tags: ["蒸蛋", "豆浆"],
+        classicBase: "鸡蛋羹/蒸水蛋是经典中式家常蛋菜。",
+        bahrainAdaptation: "鸡蛋为巴林常见补买，黄豆来自已提供材料库。",
+        note: "少盐少油；不再安排番茄炒蛋。",
+        ingredients: [["egg", "1-2 个"], ["soy", "20 g"]]
+      },
+      peanutSoySweetPotato: {
+        name: "花生黄豆豆浆 + 蒸红薯",
+        meal: "breakfast",
+        style: "豆浆机早餐",
+        tags: ["花生豆浆", "蒸红薯"],
+        classicBase: "花生豆浆是常见豆浆变化，配蒸薯类主食做简单早餐。",
+        bahrainAdaptation: "花生、黄豆来自已提供材料库，红薯为巴林常见补买。",
+        note: "花生少量，红薯小份。",
+        ingredients: [["soy", "22 g"], ["peanut", "8 g"], ["sweetPotato", "100 g"]]
+      },
+      seaCoconutPearChicken: {
+        name: "海底椰雪梨鸡汤",
+        meal: "dinner",
+        style: "经典清润汤",
+        tags: ["海底椰", "雪梨"],
+        classicBase: "经典原型：海底椰雪梨配瘦肉/鸡肉煲清润汤。",
+        bahrainAdaptation: "默认用带骨鸡腿替代瘦肉，适合巴林采购。",
+        note: "巴林干燥环境下的清润基础汤；不写成医疗功效。",
+        ingredients: [["seaCoconut", "8 g"], ["pear", "1/2 个"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      seaCoconutPearFigVeg: {
+        name: "海底椰雪梨无花果素汤",
+        meal: "dinner",
+        style: "经典清润素汤",
+        tags: ["素汤", "海底椰", "雪梨"],
+        classicBase: "经典原型：海底椰雪梨清润汤，常见做法可配瘦肉，也可做清甜素汤。",
+        bahrainAdaptation: "不用鸡肉；用无花果增加清甜和汤体。",
+        note: "素汤版适合不想吃肉的晚餐，但需要另补豆腐、鸡蛋或豆浆。",
+        ingredients: [["seaCoconut", "8 g"], ["pear", "1/2 个"], ["fig", "1 枚"], ["ginger", "1 片"]]
+      },
+      applePearLeanSoup: {
+        name: "苹果雪梨瘦肉汤",
+        meal: "dinner",
+        style: "经典清润汤",
+        tags: ["苹果", "雪梨"],
+        classicBase: "经典原型：苹果雪梨瘦肉汤，常见广式清润汤。",
+        bahrainAdaptation: "默认用鸡肉替代瘦肉；能接受瘦肉时可按原型做。",
+        note: "水果炖汤有经典原型，不是随意拼配。",
+        ingredients: [["apple", "1/2 个"], ["pear", "1/2 个"], ["chicken", "120 g"], ["leanPork", "原型 100 g"], ["ginger", "1 片"]]
+      },
+      hairyFigChicken: {
+        name: "五指毛桃鸡汤",
+        meal: "dinner",
+        style: "经典广东汤",
+        tags: ["五指毛桃", "鸡汤"],
+        classicBase: "经典原型：五指毛桃煲鸡/煲瘦肉，是广东常见汤式。",
+        bahrainAdaptation: "默认用带骨鸡腿，符合巴林常见采购。",
+        note: "温和汤底，不和太多补气材料堆叠。",
+        ingredients: [["hairyFig", "12 g"], ["chicken", "150 g"], ["redDate", "1 枚"], ["ginger", "1 片"]]
+      },
+      dangshenHuangqiChicken: {
+        name: "党参黄芪鸡汤",
+        meal: "dinner",
+        style: "经典补气汤",
+        tags: ["党参", "黄芪"],
+        classicBase: "经典原型：党参黄芪配鸡/瘦肉煲汤。",
+        bahrainAdaptation: "默认用鸡肉；感冒、上火、失眠或医生限制时不选这道。",
+        note: "轻补汤，一周安排不宜过密。",
+        ingredients: [["codonopsis", "6 g"], ["astragalus", "6 g"], ["chicken", "120 g"], ["redDate", "1 枚"], ["ginger", "1 片"]]
+      },
+      yuzhuMaidongDendrobium: {
+        name: "玉竹麦冬石斛鸡汤",
+        meal: "dinner",
+        style: "经典清润汤",
+        tags: ["玉竹", "麦冬", "石斛"],
+        classicBase: "经典原型：玉竹麦冬配瘦肉或鸡肉煲清润汤；石斛常见于清润炖汤搭配。",
+        bahrainAdaptation: "默认用鸡肉替代瘦肉，适合巴林采购。",
+        note: "石斛少量加入，不把药材堆得过重。",
+        ingredients: [["solomonseal", "8 g"], ["ophiopogon", "6 g"], ["dendrobium", "4 g"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      yuzhuMaidongLotusVeg: {
+        name: "玉竹麦冬莲子素汤",
+        meal: "dinner",
+        style: "经典清润素汤",
+        tags: ["素汤", "玉竹", "麦冬"],
+        classicBase: "经典原型：玉竹麦冬清润汤；莲子常用于中式清补汤水。",
+        bahrainAdaptation: "不用鸡肉，用莲子补汤体，保持清淡。",
+        note: "药食材料少量，不叠加太多甜味干货。",
+        ingredients: [["solomonseal", "8 g"], ["ophiopogon", "6 g"], ["dendrobium", "3 g"], ["lotusSeed", "12 g"]]
+      },
+      scallopRadishSoup: {
+        name: "瑶柱白萝卜汤",
+        meal: "dinner",
+        style: "经典海味汤",
+        tags: ["元贝", "白萝卜"],
+        classicBase: "经典原型：瑶柱/干贝配白萝卜煲汤，利用干贝鲜味和萝卜清甜。",
+        bahrainAdaptation: "不加鸡肉，作为海味清汤；需要蛋白质时晚餐另配豆腐或鸡蛋。",
+        note: "元贝少量提鲜即可，这道默认不放鸡肉。",
+        ingredients: [["scallop", "2 粒"], ["radish", "150 g"], ["ginger", "1 片"]]
+      },
+      bambooScallopChicken: {
+        name: "竹荪瑶柱鸡汤",
+        meal: "dinner",
+        style: "经典菌菇海味汤",
+        tags: ["竹荪", "元贝"],
+        classicBase: "经典原型：竹荪炖鸡/竹荪瑶柱汤，属于宴席和家常都常见的清鲜汤式。",
+        bahrainAdaptation: "默认用鸡肉，元贝少量提鲜。",
+        note: "竹荪提前泡发并清洗。",
+        ingredients: [["bambooFungus", "3 条"], ["scallop", "2 粒"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      mushroomChickenSoup: {
+        name: "三菇鸡汤",
+        meal: "dinner",
+        style: "经典菌菇汤",
+        tags: ["香菇", "羊肚菌", "黑鸡枞"],
+        classicBase: "经典原型：香菇炖鸡/菌菇鸡汤；羊肚菌和黑鸡枞作为菌菇升级材料。",
+        bahrainAdaptation: "默认用带骨鸡腿，菌菇少量组合，避免味道过重。",
+        note: "使用你已有的菌菇类材料，但保留香菇鸡汤这个经典原型。",
+        ingredients: [["shiitake", "1 朵"], ["morel", "1 朵"], ["termiteMushroom", "少量"], ["chicken", "150 g"], ["ginger", "1 片"]]
+      },
+      mushroomTofuVegSoup: {
+        name: "香菇木耳豆腐素汤",
+        meal: "dinner",
+        style: "经典家常素汤",
+        tags: ["素汤", "香菇", "木耳"],
+        classicBase: "经典原型：香菇豆腐汤、木耳豆腐汤是常见中式家常素汤。",
+        bahrainAdaptation: "豆腐为巴林常见补买；用香菇和木耳提供汤底香气和口感。",
+        note: "这是比鸡汤更适合高频晚餐的清淡素汤。",
+        ingredients: [["shiitake", "2 朵"], ["woodEar", "5 g"], ["tofu", "150 g"], ["ginger", "1 片"]]
+      },
+      woodEarEnokiChicken: {
+        name: "木耳金针菇鸡汤",
+        meal: "dinner",
+        style: "经典菌菇家常汤",
+        tags: ["木耳", "金针菇"],
+        classicBase: "经典原型：木耳鸡汤/菌菇鸡汤，干金针菇作为菌菇汤料。",
+        bahrainAdaptation: "默认用鸡肉；也可换豆腐做清淡素汤。",
+        note: "木耳和干金针菇需要泡发并清洗。",
+        ingredients: [["woodEar", "5 g"], ["enoki", "5 g"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      cornCarrotChicken: {
+        name: "玉米胡萝卜鸡汤",
+        meal: "dinner",
+        style: "经典家常清汤",
+        tags: ["玉米", "胡萝卜"],
+        classicBase: "经典原型：玉米胡萝卜排骨汤，是常见广式/中式家常汤。",
+        bahrainAdaptation: "默认用带骨鸡腿替代排骨；如果能接受猪骨，可按原型做。",
+        note: "玉米和胡萝卜来自已提供材料库，鸡肉为巴林常见补买。",
+        ingredients: [["corn", "1/3 根"], ["carrot", "1/2 根"], ["chicken", "150 g"], ["leanPork", "原型排骨 120 g"], ["ginger", "1 片"]]
+      },
+      cornCarrotLotusVeg: {
+        name: "玉米胡萝卜莲子素汤",
+        meal: "dinner",
+        style: "经典家常素汤",
+        tags: ["素汤", "玉米", "胡萝卜"],
+        classicBase: "经典原型：玉米胡萝卜清汤是常见家常甜汤底，莲子常用于清补汤水。",
+        bahrainAdaptation: "不用排骨或鸡肉，用莲子增加饱腹感。",
+        note: "清甜但不加蜜枣，适合一人食晚餐。",
+        ingredients: [["corn", "1/3 根"], ["carrot", "1/2 根"], ["lotusSeed", "12 g"], ["ginger", "1 片"]]
+      },
+      tomatoTofuShrimpSoup: {
+        name: "番茄豆腐虾米汤",
+        meal: "dinner",
+        style: "经典家常汤",
+        tags: ["番茄", "虾米"],
+        classicBase: "经典原型：番茄豆腐汤，虾米是中式家常提鲜材料。",
+        bahrainAdaptation: "豆腐为巴林常见补买；虾米来自已提供材料库。",
+        note: "清淡替换汤，不作为药膳汤。",
+        ingredients: [["tomato", "1 个"], ["tofu", "120 g"], ["driedShrimp", "1 小撮"], ["ginger", "1 片"]]
+      },
+      pumpkinLotusChicken: {
+        name: "南瓜莲子鸡汤",
+        meal: "dinner",
+        style: "经典家常甜润汤",
+        tags: ["南瓜", "莲子"],
+        classicBase: "经典原型：南瓜煲汤、莲子煲汤都是常见家常汤式，可与鸡肉同炖。",
+        bahrainAdaptation: "默认用鸡肉；南瓜和莲子来自已提供材料库。",
+        note: "南瓜有甜味，不再加蜜枣。",
+        ingredients: [["pumpkin", "100 g"], ["lotusSeed", "12 g"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      pumpkinLotusVeg: {
+        name: "南瓜莲子素汤",
+        meal: "dinner",
+        style: "经典家常素汤",
+        tags: ["素汤", "南瓜", "莲子"],
+        classicBase: "经典原型：南瓜汤和莲子汤都是常见家常汤水，适合做清甜素汤。",
+        bahrainAdaptation: "不用鸡肉；南瓜提供自然甜味和汤体。",
+        note: "南瓜量不要太大，避免晚餐主食过量。",
+        ingredients: [["pumpkin", "120 g"], ["lotusSeed", "12 g"], ["ginger", "1 片"]]
+      },
+      tremellaPearAlmondFig: {
+        name: "银耳雪梨杏仁无花果羹",
+        meal: "dinner",
+        style: "经典糖水",
+        tags: ["银耳", "杏仁", "无花果"],
+        classicBase: "经典原型：银耳雪梨羹，可配南北杏或无花果做润燥糖水。",
+        bahrainAdaptation: "作为晚餐时必须另补蛋白质，例如鸡蛋、豆腐或无糖豆浆。",
+        note: "这是经典糖水，不是完整晚餐；减脂版不加冰糖。",
+        ingredients: [["tremella", "1/4 朵"], ["pear", "1/2 个"], ["apricotKernel", "6 g"], ["fig", "1 枚"], ["redDate", "1 枚"]]
+      },
+      redDateLonganEgg: {
+        name: "红枣桂圆鸡蛋糖水",
+        meal: "dinner",
+        style: "经典糖水",
+        tags: ["红枣", "桂圆"],
+        classicBase: "经典原型：红枣桂圆鸡蛋糖水是常见中式甜汤。",
+        bahrainAdaptation: "干荔枝可少量替换桂圆，但不建议和桂圆同时多放。",
+        note: "甜味干货少量；这道不作为高频减脂晚餐。",
+        ingredients: [["redDate", "1 枚"], ["longan", "2 粒"], ["lychee", "可选 1 粒"], ["egg", "1 个"]]
+      },
+      chenpiRedBeanSoup: {
+        name: "陈皮红豆沙",
+        meal: "dinner",
+        style: "经典糖水",
+        tags: ["陈皮", "红豆"],
+        classicBase: "经典原型：陈皮红豆沙是广式糖水基础款。",
+        bahrainAdaptation: "减脂版不加糖，作为晚餐时需另补蛋白质。",
+        note: "红豆量小，陈皮一小片即可。",
+        ingredients: [["redBean", "25 g"], ["chenpi", "1 小片"], ["redDate", "可选 1 枚"]]
+      },
+      coconutChickenSoup: {
+        name: "椰子鸡汤",
+        meal: "dinner",
+        style: "经典椰子鸡",
+        tags: ["椰子", "鸡汤"],
+        classicBase: "经典原型：椰子鸡汤/椰子炖鸡。",
+        bahrainAdaptation: "椰子是“有就买”；买不到就不硬凑。",
+        note: "椰子不是当前库存事实，只有买到时才进入计划。",
+        ingredients: [["coconut", "少量椰肉或椰水"], ["chicken", "150 g"], ["ginger", "1 片"]]
+      },
+      angelicaChickenSoup: {
+        name: "当归红枣鸡汤",
+        meal: "dinner",
+        style: "经典药膳汤",
+        tags: ["当归", "红枣"],
+        classicBase: "经典原型：当归红枣鸡汤是常见药膳汤式。",
+        bahrainAdaptation: "默认用鸡肉；经期、孕期、用药或医生限制时先不选。",
+        note: "当归味重，一次少量，不作为日常高频汤。",
+        ingredients: [["angelica", "1 小片"], ["redDate", "1 枚"], ["goji", "5 粒"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      chrysanthemumMintTea: {
+        name: "菊花薄荷茶",
+        meal: "dinner",
+        style: "经典花草茶",
+        tags: ["菊花", "薄荷"],
+        classicBase: "经典原型：菊花茶、薄荷茶都是常见中式花草茶。",
+        bahrainAdaptation: "只能作为晚间饮品，不是完整晚餐；需另配正餐蛋白质。",
+        note: "不加糖；如果胃寒或不适，先不喝薄荷。",
+        ingredients: [["chrysanthemum", "3 g"], ["mint", "少量"]]
+      },
+      luohanVegSoup: {
+        name: "罗汉斋素汤",
+        meal: "dinner",
+        style: "经典斋汤",
+        tags: ["素汤", "菌菇", "竹荪"],
+        classicBase: "经典原型：罗汉斋/斋汤属于中式素菜经典结构，常用菌菇、豆制品和蔬菜。",
+        bahrainAdaptation: "用已有干香菇、竹荪、木耳和巴林常见豆腐组成素汤。",
+        note: "这是用于降低鸡肉频率的主力素汤。",
+        ingredients: [["shiitake", "1 朵"], ["bambooFungus", "2 条"], ["woodEar", "5 g"], ["carrot", "1/2 根"], ["tofu", "120 g"], ["ginger", "1 片"]]
+      },
+      peanutLotusChicken: {
+        name: "花生莲子鸡汤",
+        meal: "dinner",
+        style: "经典健脾家常汤",
+        tags: ["花生", "莲子"],
+        classicBase: "经典原型：花生煲鸡/花生莲子煲汤是常见中式家常汤式。",
+        bahrainAdaptation: "默认用带骨鸡腿；不使用猪骨也能保持家常汤结构。",
+        note: "花生少量，避免汤品过油。",
+        ingredients: [["peanut", "10 g"], ["lotusSeed", "10 g"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      honeyDatePearChicken: {
+        name: "雪梨蜜枣鸡汤",
+        meal: "dinner",
+        style: "经典清甜汤",
+        tags: ["雪梨", "蜜枣"],
+        classicBase: "经典原型：雪梨蜜枣瘦肉汤/鸡汤是常见清甜润燥汤式。",
+        bahrainAdaptation: "默认用鸡肉替代瘦肉；蜜枣只用于提甜。",
+        note: "蜜枣 1 枚即可，避免把晚餐做成糖水。",
+        ingredients: [["pear", "1/2 个"], ["honeyDate", "1 枚"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      },
+      walnutRedDateChicken: {
+        name: "核桃红枣鸡汤",
+        meal: "dinner",
+        style: "经典滋补家常汤",
+        tags: ["核桃", "红枣"],
+        classicBase: "经典原型：核桃红枣煲瘦肉/鸡汤是常见中式滋补家常汤式。",
+        bahrainAdaptation: "默认用鸡肉；核桃少量，不做高脂汤。",
+        note: "核桃和红枣都少量使用，不和桂圆荔枝叠加。",
+        ingredients: [["walnut", "6 g"], ["redDate", "1 枚"], ["chicken", "120 g"], ["ginger", "1 片"]]
+      }
+    };
+
+    const weekPlan = [
+      { day: "周一", breakfast: "soyEggSweetPotato", dinner: "seaCoconutPearFigVeg" },
+      { day: "周二", breakfast: "redDateSoyEgg", dinner: "hairyFigChicken" },
+      { day: "周三", breakfast: "walnutSoyPumpkin", dinner: "scallopRadishSoup" },
+      { day: "周四", breakfast: "redBeanRiceEgg", dinner: "yuzhuMaidongLotusVeg" },
+      { day: "周五", breakfast: "steamedPumpkinCoffee", dinner: "luohanVegSoup" },
+      { day: "周六", breakfast: "steamedEggSoy", dinner: "mushroomTofuVegSoup" },
+      { day: "周日", breakfast: "peanutSoySweetPotato", dinner: "cornCarrotLotusVeg" }
+    ];
+
+    const storageKey = "bahrain-private-kitchen-v5";
+    const todayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
+    let overrides = loadOverrides();
+
+    function loadOverrides() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveOverrides() {
+      localStorage.setItem(storageKey, JSON.stringify(overrides));
+    }
+
+    function getDishId(dayIndex, meal) {
+      const key = `${dayIndex}-${meal}`;
+      return overrides[key] || weekPlan[dayIndex][meal];
+    }
+
+    function dishPool(meal) {
+      return Object.entries(dishes).filter(([, dish]) => dish.meal === meal).map(([id]) => id);
+    }
+
+    function replaceDish(dayIndex, meal) {
+      const pool = dishPool(meal);
+      const current = getDishId(dayIndex, meal);
+      const currentPosition = pool.indexOf(current);
+      const next = pool[(currentPosition + 1) % pool.length];
+      overrides[`${dayIndex}-${meal}`] = next;
+      saveOverrides();
+      render();
+      document.querySelector("#today").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function resetDish(dayIndex, meal) {
+      delete overrides[`${dayIndex}-${meal}`];
+      saveOverrides();
+      render();
+    }
+
+    function materialName(id) {
+      return materials[id]?.name || id;
+    }
+
+    function ingredientList(dish) {
+      return `<ul class="ingredients">${dish.ingredients.map(([id, amount]) => `<li><span>${materialName(id)}</span><span>${amount}</span></li>`).join("")}</ul>`;
+    }
+
+    function tagRow(dish) {
+      return `<div class="tag-row"><span class="tag blue">${dish.style}</span>${dish.tags.map(tag => `<span class="tag light">${tag}</span>`).join("")}</div>`;
+    }
+
+    function recipeProof(dish) {
+      return `
+        <div class="notice">
+          <p><strong>经典原型：</strong>${dish.classicBase}</p>
+          <p><strong>巴林替代：</strong>${dish.bahrainAdaptation}</p>
+        </div>
+      `;
+    }
+
+    function mealCard(dayIndex, meal, title) {
+      const id = getDishId(dayIndex, meal);
+      const dish = dishes[id];
+      const changed = id !== weekPlan[dayIndex][meal];
+      return `
+        <article class="card meal-card">
+          <div class="head">
+            <div>
+              <span class="kicker">${title}</span>
+              <h3>${dish.name}</h3>
+            </div>
+            <span class="tag ${meal === "dinner" ? "gold" : ""}">${meal === "dinner" ? "炖盅" : "早餐"}</span>
+          </div>
+          <div class="body">
+            <p class="meta">${dish.note}</p>
+            ${tagRow(dish)}
+            ${recipeProof(dish)}
+            <details open>
+              <summary>材料用量</summary>
+              ${ingredientList(dish)}
+            </details>
+            <div class="actions">
+              <button type="button" onclick="replaceDish(${dayIndex}, '${meal}')">换一个</button>
+              <button type="button" class="secondary" onclick="resetDish(${dayIndex}, '${meal}')" ${changed ? "" : "disabled"}>恢复默认</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderToday() {
+      const today = weekPlan[todayIndex];
+      document.querySelector("#dataNotice").textContent = `今天按 ${today.day} 显示。V3 菜品只使用“经典原型 + 明确替代”的规则；鸡肉、鸡蛋、豆腐等属于巴林常见补买，不是当前库存事实。`;
+      document.querySelector("#todayCards").innerHTML = [
+        mealCard(todayIndex, "breakfast", `${today.day} 早餐`),
+        mealCard(todayIndex, "dinner", `${today.day} 晚餐`)
+      ].join("");
+    }
+
+    function renderPrep() {
+      const nextIndex = (todayIndex + 1) % 7;
+      const dinner = dishes[getDishId(nextIndex, "dinner")];
+      document.querySelector("#prepChecklist").innerHTML = `
+        <p><strong>今晚预约明天晚餐：</strong>${weekPlan[nextIndex].day} · ${dinner.name}</p>
+        ${ingredientList(dinner)}
+        <label><input type="checkbox">干货先冲洗；菌菇、银耳按需要提前泡发。</label>
+        <label><input type="checkbox">炖盅不要堆满，给水位和食材膨胀留空间。</label>
+        <label><input type="checkbox">元贝、虾米、红枣、蜜枣、龙眼这类鲜甜食材少量使用。</label>
+        <label><input type="checkbox">如果晚餐是清润甜汤，额外补鸡蛋、豆浆、豆腐或其他蛋白质。</label>
+        <div class="actions">
+          <button type="button" onclick="replaceDish(${nextIndex}, 'dinner')">明天晚餐换一个</button>
+          <button type="button" class="secondary" onclick="resetDish(${nextIndex}, 'dinner')">恢复明天默认</button>
+        </div>
+      `;
+    }
+
+    function renderWeek() {
+      document.querySelector("#weekGrid").innerHTML = weekPlan.map((plan, index) => {
+        const breakfast = dishes[getDishId(index, "breakfast")];
+        const dinner = dishes[getDishId(index, "dinner")];
+        return `
+          <article class="card day-card">
+            <div class="head">
+              <h3>${plan.day}</h3>
+              <span class="tag ${index === todayIndex ? "red" : ""}">${index === todayIndex ? "今天" : "计划"}</span>
+            </div>
+            <div class="body">
+              <div class="meal-line">
+                <span class="kicker">早餐</span>
+                <p>${breakfast.name}</p>
+                <p class="meta">${breakfast.ingredients.map(([id, amount]) => `${materialName(id)} ${amount}`).join(" · ")}</p>
+                <button type="button" class="secondary" onclick="replaceDish(${index}, 'breakfast')">换早餐</button>
+              </div>
+              <div class="meal-line">
+                <span class="kicker">晚餐炖盅</span>
+                <p>${dinner.name}</p>
+                <p class="meta">${dinner.ingredients.map(([id, amount]) => `${materialName(id)} ${amount}`).join(" · ")}</p>
+                <button type="button" class="secondary" onclick="replaceDish(${index}, 'dinner')">换晚餐</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderDishLibrary() {
+      const grouped = {
+        breakfast: Object.entries(dishes).filter(([, dish]) => dish.meal === "breakfast"),
+        dinner: Object.entries(dishes).filter(([, dish]) => dish.meal === "dinner")
+      };
+      document.querySelector("#dishLibrary").innerHTML = Object.entries(grouped).map(([meal, list]) => `
+        <div class="card library-card">
+          <strong>${meal === "breakfast" ? "早餐库" : "晚餐炖盅库"} · ${list.length} 道</strong>
+          ${list.map(([, dish]) => `
+            <details>
+              <summary>${dish.name}</summary>
+              <p class="meta">${dish.note}</p>
+              ${recipeProof(dish)}
+              ${ingredientList(dish)}
+            </details>
+          `).join("")}
+        </div>
+      `).join("");
+    }
+
+    function renderMaterialLibrary() {
+      const groups = {};
+      Object.values(materials).forEach(item => {
+        groups[item.category] ||= [];
+        groups[item.category].push(item);
+      });
+      document.querySelector("#materialLibrary").innerHTML = Object.entries(groups).map(([category, items]) => `
+        <div class="card library-card">
+          <strong>${category}</strong>
+          <div class="chips">
+            ${items.map(item => `<span class="chip">${item.name}</span>`).join("")}
+          </div>
+          <p class="meta">来源：${Array.from(new Set(items.map(item => item.source))).join(" / ")}</p>
+        </div>
+      `).join("");
+    }
+
+    function updateActiveNav() {
+      const sections = ["today", "requirements", "prep", "week", "dishes", "materials"];
+      let current = "today";
+      sections.forEach(id => {
+        if (document.querySelector(`#${id}`).getBoundingClientRect().top < 130) {
+          current = id;
+        }
+      });
+      document.querySelectorAll(".bottom-nav a").forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
+      });
+    }
+
+    function render() {
+      renderToday();
+      renderPrep();
+      renderWeek();
+      renderDishLibrary();
+      renderMaterialLibrary();
+      updateActiveNav();
+    }
+
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
+    render();
+
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
