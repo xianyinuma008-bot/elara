@@ -1,0 +1,18 @@
+{
+  "name": "翩翩的巴林私厨",
+  "short_name": "巴林私厨",
+  "description": "早餐、炖盅晚餐、材料库和菜品库的手机私厨工具。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf8f0",
+  "theme_color": "#314f39",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
